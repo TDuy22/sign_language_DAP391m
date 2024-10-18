@@ -1,25 +1,27 @@
 import pickle
-
+from sklearn.svm import LinearSVC
+import lightgbm as lgb
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+from sklearn.svm import SVC
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
 import numpy as np
 
 
-data_dict = pickle.load(open('./data.pickle', 'rb'))
-
-mem = []
-for i in range(len(data_dict['data'])):
-    j = data_dict['data'][i]
-    if len(j) == 84:
-        mem.append(i)
+data_dict = pickle.load(open('./data_full.pickle', 'rb'))
 
 data = np.asarray(data_dict['data'])
 labels = np.asarray(data_dict['labels'])
 
-x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, shuffle=True, stratify=labels)
+x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.1, shuffle=True, stratify=labels)
 
-model = RandomForestClassifier()
+# model = lgb.LGBMClassifier(boosting_type='gbdt', num_leaves=31, learning_rate=0.05, n_estimators=100, random_state=42)
+model = make_pipeline(
+    StandardScaler(),
+    SVC(kernel='rbf', C=10, gamma='scale')  # 'rbf' kernel performs well with complex data
+)
 
 model.fit(x_train, y_train)
 
