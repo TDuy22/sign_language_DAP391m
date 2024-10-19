@@ -3,6 +3,15 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import time
+import pyttsx3
+import threading
+
+engine = pyttsx3.init()
+
+def speak_text(text):
+    """Function to speak the text asynchronously."""
+    engine.say(text)
+    engine.runAndWait()
 
 # Load the trained model
 model_dict = pickle.load(open('./model_Good.p', 'rb'))
@@ -24,7 +33,7 @@ threshold = 20
 
 ratio =0.8
 spaceWord=0
-thresholdSpace = 20
+thresholdSpace = 10
 
 cache = []
 text = '' 
@@ -130,6 +139,10 @@ while True:
         spaceWord +=1
         if spaceWord > thresholdSpace and text[-1]!=' ':
             text += ' '
+
+            word = text.split(' ')
+            threading.Thread(target=speak_text, args=(word[-2],), daemon=True).start()
+            print(word[-2])
             print(text)
     
     # Get the dimensions of the frame
