@@ -14,7 +14,7 @@ def speak_text(text):
     engine.runAndWait()
 
 # Load the trained model
-model_dict = pickle.load(open('./model_Good.p', 'rb'))
+model_dict = pickle.load(open('./model_last_2.p', 'rb'))
 model = model_dict['model']
 
 cap = cv2.VideoCapture(0)
@@ -29,7 +29,7 @@ hands = mp_hands.Hands(min_detection_confidence=0.6, max_num_hands=1)
 
 prev_frame_time = 0
 new_frame_time = 0
-threshold = 20
+threshold = 8
 
 ratio =0.8
 spaceWord=0
