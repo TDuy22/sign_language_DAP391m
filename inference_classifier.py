@@ -50,8 +50,8 @@ while True:
     z_ = []
 
     ret, frame = cap.read()
-    if not ret:
-        break  # Thoát nếu không lấy được khung hình
+    # if not ret:
+    #     break  # Thoát nếu không lấy được khung hình
 
     H, W, _ = frame.shape
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
